@@ -12,6 +12,8 @@ object CollectionsTest {
         mutableList()
         set()
         map()
+        copying()
+        someFunctions()
     }
     fun mutableList(){
         val numbers = mutableListOf(1, 2, 3, 4)
@@ -38,6 +40,8 @@ object CollectionsTest {
         muteSetBackwards.add(6)
         println(muteSetBackwards)
         println("the sets are equal: ${muteSet == muteSetBackwards}")
+        val emptySet = mutableSetOf<String>()
+        println(emptySet)
     }
     fun map(){
         val numbersMap = mapOf("key1" to 1, "key2" to 2, "key3" to 3, "key4" to 1)
@@ -59,5 +63,42 @@ object CollectionsTest {
         numbersMap3["one"] = 11
 
         println(numbersMap3)
+    }
+    fun copying(){
+        val sourceList = mutableListOf(1, 2, 3)
+        val copyList = sourceList.toMutableList()
+        val readOnlyCopyList = sourceList.toList()
+        sourceList.add(4)
+        println("Copy size: ${copyList.size}")
+
+        //readOnlyCopyList.add(4)             // compilation error
+        println("Read-only copy size: ${readOnlyCopyList.size}")
+        val copySet = sourceList.toMutableSet()
+        copySet.add(3)
+        copySet.add(4)
+        println(copySet)
+
+        val referenceList = sourceList
+        referenceList.add(4)
+        println("Source size: ${sourceList.size}")
+
+        val referenceList1: List<Int> = sourceList
+        //referenceList.add(4)            //compilation error
+        sourceList.add(4)
+        println(referenceList1) // shows the current state of sourceList
+    }
+    fun someFunctions(){
+        val numbers = listOf("one", "two", "three", "four")
+        val longerThan3 = numbers.filter { it.length > 3 }
+        println(longerThan3)
+
+        val numbers1 = setOf(1, 2, 3)
+        println(numbers1.map { it * 3 })
+        println(numbers1.mapIndexed { idx, value -> value * idx })
+
+        val words = listOf("a", "abc", "ab", "def", "abcd")
+        val withLength = words.associateBy { it.length }
+        println(withLength.keys) // [a, abc, ab, def, abcd]
+        println(withLength.values) // [1, 3, 2, 3, 4]
     }
 }
